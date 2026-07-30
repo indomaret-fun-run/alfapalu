@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pembelian Tiket Pending — Alfamidi Familday Funwalk 2026</title>
+<meta name="description" content="Status pembelian tiket Alfamidi Familday Funwalk 2026 Palu - Menunggu konfirmasi pembayaran"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+:root{--blue:#E4002B;--blue-dark:#B30022;--blue-light:#FF4D6D;--blue-soft:#FFF0F3;--cream:#FFF8F0;--ink:#1A1A1A;--muted:#6B6B73;--line:#E8E8EC;--bg:#FAFAFA;--emerald:#10B981;--gold:#F5A623;--red:#EF4444}
+*{-webkit-font-smoothing:antialiased;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;margin:0}
+.font-display{font-family:'Anton',sans-serif;letter-spacing:.01em}
+.font-mono{font-family:'JetBrains Mono',monospace}
+
+.pending-hero{position:relative;background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 40%,#1a1a1a 100%);overflow:hidden;padding:3rem 1rem 4rem}
+.pending-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(245,166,35,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.06) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(circle at center,black 30%,transparent 70%);-webkit-mask-image:radial-gradient(circle at center,black 30%,transparent 70%)}
+.pending-hero .glow{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,166,35,.2) 0%,transparent 70%);filter:blur(50px);top:-100px;left:50%;transform:translateX(-50%)}
+.pending-hero .glow2{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(228,0,43,.2) 0%,transparent 70%);filter:blur(40px);bottom:-80px;right:-50px}
+
+.icon-pending{animation:pendingPulse 2s ease-in-out infinite}
+@keyframes pendingPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.85}}
+
+.fade-up{opacity:0;transform:translateY(24px);animation:fadeUp .6s cubic-bezier(.16,1,.3,1) forwards}
+.fade-up-d1{animation-delay:.4s}
+.fade-up-d2{animation-delay:.7s}
+.fade-up-d3{animation-delay:1s}
+.fade-up-d4{animation-delay:1.3s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+.ticket-card{background:#fff;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.05);overflow:hidden;position:relative}
+.ticket-card::before,.ticket-card::after{content:'';position:absolute;width:28px;height:28px;background:var(--bg);border-radius:50%;top:50%;transform:translateY(-50%);z-index:5;box-shadow:inset 0 2px 6px rgba(0,0,0,.08)}
+.ticket-card::before{left:-14px}
+.ticket-card::after{right:-14px}
+.ticket-divider{border-top:2px dashed var(--line);position:relative;margin:0 -1px}
+.ticket-divider::before,.ticket-divider::after{content:'';position:absolute;width:28px;height:28px;background:#fff;border-radius:50%;top:-14px;z-index:5}
+.ticket-divider::before{left:-14px}
+.ticket-divider::after{right:-14px}
+
+.detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.detail-row:last-child{border-bottom:none}
+.detail-label{font-size:12px;color:var(--muted);font-weight:500;min-width:130px;flex-shrink:0}
+.detail-value{font-size:14px;font-weight:600;text-align:right;word-break:break-word}
+
+.btn-primary{background:var(--gold);color:#fff;font-weight:700;border-radius:12px;transition:all .2s;box-shadow:0 4px 14px rgba(245,166,35,.3);border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary:hover{background:#E6961A;transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,166,35,.4)}
+.btn-secondary{background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:600;border-radius:12px;transition:all .2s;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-secondary:hover{border-color:var(--ink);background:#F5F5F7}
+.btn-call{background:linear-gradient(135deg,#10B981,#059669);color:#fff;font-weight:700;border-radius:12px;transition:all .2s;box-shadow:0 4px 14px rgba(16,185,129,.3);border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;position:relative;overflow:hidden}
+.btn-call:hover{background:linear-gradient(135deg,#059669,#047857);transform:translateY(-1px);box-shadow:0 6px 20px rgba(16,185,129,.4)}
+.btn-call::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmerBtn 2.5s ease-in-out infinite}
+@keyframes shimmerBtn{0%{left:-100%}100%{left:100%}}
+
+.info-card{background:var(--blue-soft);border:1px solid rgba(228,0,43,.12);border-radius:14px;padding:1.25rem}
+.info-card.warning{background:rgba(245,166,35,.06);border-color:rgba(245,166,35,.2)}
+.info-card.danger{background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.18)}
+
+.reg-id-box{background:linear-gradient(135deg,#374151,#4B5563);color:#fff;border-radius:12px;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:relative;overflow:hidden}
+.reg-id-box::after{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05)}
+
+.qr-placeholder{width:160px;height:160px;background:repeating-conic-gradient(#d1d5db 0% 25%,#f3f4f6 0% 50%) 50%/12px 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;opacity:.5;filter:grayscale(1)}
+.qr-placeholder::after{content:'LIMIT QR';position:absolute;color:#EF4444;font-size:10px;font-weight:800;letter-spacing:.15em;background:rgba(255,255,255,.95);padding:6px 12px;border-radius:6px;border:1.5px solid #EF4444;z-index:3}
+.qr-cross{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.qr-cross::before{content:'';position:absolute;width:120%;height:2px;background:#EF4444;transform:rotate(-45deg);opacity:.6;border-radius:2px}
+.qr-cross::after{content:'';position:absolute;width:120%;height:2px;background:#EF4444;transform:rotate(45deg);opacity:.6;border-radius:2px}
+
+.pulse-ring-gold{animation:pulseRingGold 2s ease-out infinite}
+@keyframes pulseRingGold{0%{box-shadow:0 0 0 0 rgba(245,166,35,.4)}70%{box-shadow:0 0 0 15px rgba(245,166,35,0)}100%{box-shadow:0 0 0 0 rgba(245,166,35,0)}}
+
+.status-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.08em}
+.status-badge.pending{background:rgba(245,166,35,.15);color:#D97706;border:1px solid rgba(245,166,35,.3)}
+.status-badge.limit{background:rgba(239,68,68,.1);color:#DC2626;border:1px solid rgba(239,68,68,.25)}
+.status-dot{width:7px;height:7px;border-radius:50%;animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.alert-banner{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:2px solid #F59E0B;border-radius:16px;padding:1.5rem;position:relative;overflow:hidden}
+.alert-banner::before{content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;border-radius:50%;background:rgba(245,158,11,.1)}
+.alert-banner .stripes{position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 10px,rgba(245,158,11,.06) 10px,rgba(245,158,11,.06) 20px);pointer-events:none}
+
+@media print{
+body{background:#fff!important}
+.no-print,.pending-hero::before,.pending-hero .glow,.pending-hero .glow2,.alert-banner .stripes,.alert-banner::before{display:none!important}
+.pending-hero{background:#374151!important;padding:2rem 1rem!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ticket-card{box-shadow:none!important;border:2px solid var(--line)!important;break-inside:avoid}
+.ticket-card::before,.ticket-card::after,.ticket-divider::before,.ticket-divider::after{display:none!important}
+.info-card,.info-card.warning,.info-card.danger,.alert-banner,.reg-id-box{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.btn-primary,.btn-secondary,.btn-call{display:none!important}
+.qr-placeholder{opacity:1;filter:none}
+.qr-cross{display:none!important}
+.qr-placeholder::after{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[var(--line)] no-print">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Logo" class="w-9 h-9 rounded-lg object-cover shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/36/E4002B/FFFFFF?text=A'" src="logo.png"/>
+<div>
+<div class="font-display text-sm leading-none tracking-wider">ALFAMIDI</div>
+<div class="text-[9px] tracking-[0.25em] text-[var(--blue)] font-semibold mt-0.5">FAMILDAY FUNWALK 2026 · PALU</div>
+</div>
+</div>
+<a href="index.html" class="text-sm text-[var(--muted)] hover:text-[var(--blue)] transition flex items-center gap-2 font-medium">
+<i class="fa-solid fa-arrow-left text-xs"></i> Beranda
+</a>
+</div>
+</header>
+
+<!-- PENDING HERO -->
+<section class="pending-hero text-center text-white relative">
+<div class="glow"></div>
+<div class="glow2"></div>
+<div class="relative z-10 max-w-2xl mx-auto">
+<div class="flex justify-center mb-5 fade-up">
+<div class="w-20 h-20 rounded-full bg-[var(--gold)]/15 backdrop-blur-sm flex items-center justify-center pulse-ring-gold">
+<i class="fa-solid fa-hourglass-half text-3xl text-[var(--gold)] icon-pending"></i>
+</div>
+</div>
+<h1 class="font-display text-3xl md:text-5xl leading-[0.95] fade-up fade-up-d1">PEMBELIAN TIKET<br/>PENDING</h1>
+<p class="mt-4 text-white/60 text-sm md:text-base max-w-md mx-auto fade-up fade-up-d2">Kode QR pembayaran telah mencapai batas limit. Pembayaran Anda belum dapat diverifikasi secara otomatis.</p>
+<div class="mt-5 flex flex-wrap items-center justify-center gap-3 fade-up fade-up-d2">
+<span class="status-badge pending">
+<span class="status-dot" style="background:#F5A623;box-shadow:0 0 6px #F5A623"></span>
+MENUNGGU KONFIRMASI
+</span>
+<span class="status-badge limit">
+<i class="fa-solid fa-triangle-exclamation text-[10px]"></i>
+QR LIMIT TERCAPAI
+</span>
+</div>
+</div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-5xl mx-auto px-4 sm:px-6 -mt-6 relative z-10 pb-12">
+
+<!-- ALERT BANNER -->
+<div class="alert-banner mb-6 fade-up fade-up-d3 no-print">
+<div class="stripes"></div>
+<div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+<div class="flex items-start gap-3 flex-1">
+<div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+<i class="fa-solid fa-phone-volume text-xl text-[#D97706]"></i>
+</div>
+<div class="text-left">
+<div class="font-bold text-sm text-[#92400E] mb-1">KONFIRMASI ULANG PEMBAYARAN ANDA</div>
+<p class="text-xs text-[#A16207] leading-relaxed">Kode QR pembayaran telah mencapai batas limit penggunaan. Silakan konfirmasi ulang pembayaran Anda melalui Call Center di bawah ini untuk memproses verifikasi tiket Anda.</p>
+</div>
+</div>
+<a href="tel:082379977693" class="btn-call py-3.5 px-6 text-sm whitespace-nowrap flex-shrink-0 w-full sm:w-auto justify-center">
+<i class="fa-solid fa-phone"></i> 0823-7997-7693
+</a>
+</div>
+</div>
+
+<!-- REG ID BOX -->
+<div class="reg-id-box mb-6 fade-up fade-up-d3">
+<div>
+<div class="text-[10px] tracking-[0.2em] text-white/50 font-semibold mb-1">NO. REGISTRASI</div>
+<div class="font-mono text-lg md:text-2xl font-bold tracking-wider" id="regIdDisplay">AFFW-2026-PALU-XXXX</div>
+</div>
+<div class="text-right">
+<div class="text-[10px] tracking-[0.2em] text-white/50 font-semibold mb-1">TANGGAL DAFTAR</div>
+<div class="font-mono text-sm" id="timestampDisplay">-</div>
+</div>
+</div>
+
+<!-- TICKET CARD -->
+<div class="ticket-card fade-up fade-up-d3">
+<div class="p-5 md:p-8">
+<div class="flex items-center gap-2 mb-5">
+<div class="w-1 h-6 bg-[var(--gold)] rounded-full"></div>
+<h2 class="font-display text-xl md:text-2xl">DETAIL PESERTA</h2>
+</div>
+<div class="detail-row"><span class="detail-label">Nama Peserta</span><span class="detail-value" id="dNama">-</span></div>
+<div class="detail-row"><span class="detail-label">Kategori Tiket</span><span class="detail-value" id="dKategori">-</span></div>
+<div class="detail-row"><span class="detail-label">Jumlah Tiket</span><span class="detail-value" id="dJumlah">-</span></div>
+<div class="detail-row"><span class="detail-label">Ukuran Jersey</span><span class="detail-value" id="dJersey">-</span></div>
+<div class="detail-row"><span class="detail-label">Nama Bib</span><span class="detail-value" id="dBib">-</span></div>
+<div class="detail-row"><span class="detail-label">WhatsApp</span><span class="detail-value font-mono text-sm" id="dWA">-</span></div>
+<div class="detail-row"><span class="detail-label">Email</span><span class="detail-value text-sm" id="dEmail">-</span></div>
+</div>
+
+<div class="ticket-divider"></div>
+
+<div class="p-5 md:p-8">
+<div class="flex flex-col md:flex-row gap-6 md:gap-8">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-5">
+<div class="w-1 h-6 bg-[var(--muted)] rounded-full"></div>
+<h2 class="font-display text-xl md:text-2xl">INFORMASI EVENT</h2>
+</div>
+<div class="detail-row"><span class="detail-label">Nama Event</span><span class="detail-value">Alfamidi Familday Funwalk 2026</span></div>
+<div class="detail-row"><span class="detail-label">Tanggal</span><span class="detail-value font-semibold text-[var(--blue)]">Minggu, 23 Agustus 2026</span></div>
+<div class="detail-row"><span class="detail-label">Lokasi</span><span class="detail-value">Lapangan Vatulemo, Palu</span></div>
+<div class="detail-row"><span class="detail-label">Jarak</span><span class="detail-value">5 Kilometer</span></div>
+<div class="detail-row"><span class="detail-label">Total Bayar</span><span class="detail-value text-[var(--blue)] text-lg font-display" id="dTotal">-</span></div>
+<div class="detail-row"><span class="detail-label">Status Bayar</span><span class="detail-value"><span class="inline-flex items-center gap-1.5 text-[#D97706] text-xs font-bold"><i class="fa-solid fa-clock text-[10px]"></i> PENDING — QR LIMIT</span></span></div>
+</div>
+<div class="flex flex-col items-center gap-3">
+<div class="qr-placeholder" id="qrArea">
+<div class="qr-cross"></div>
+</div>
+<p class="text-[10px] text-[var(--red)] font-bold tracking-widest text-center">QR CODE TIDAK AKTIF</p>
+<p class="text-[9px] text-[var(--muted)] text-center leading-relaxed max-w-[160px]">Hubungi Call Center untuk konfirmasi ulang pembayaran</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ACTION BUTTONS -->
+<div class="flex flex-col sm:flex-row gap-3 mt-6 fade-up fade-up-d4 no-print">
+<a href="tel:082379977693" class="btn-call flex-1 py-3.5 px-6 text-sm">
+<i class="fa-solid fa-phone-volume"></i> Hubungi Call Center
+</a>
+<button class="btn-primary flex-1 py-3.5 px-6 text-sm" onclick="window.print()">
+<i class="fa-solid fa-print"></i> Cetak Bukti
+</button>
+<button class="btn-secondary flex-1 py-3.5 px-6 text-sm" id="shareBtn">
+<i class="fa-solid fa-share-nodes"></i> Bagikan
+</button>
+</div>
+
+<!-- INFO CARDS -->
+<div class="grid md:grid-cols-2 gap-4 mt-8 fade-up fade-up-d4">
+<div class="info-card danger">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--red)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+<i class="fa-solid fa-qrcode text-[var(--red)]"></i>
+</div>
+<div>
+<div class="font-semibold text-sm mb-1">QR Code Limit Terlampaui</div>
+<p class="text-xs text-[var(--muted)] leading-relaxed">Kode QR pembayaran yang Anda gunakan telah mencapai batas limit transaksi. Tiket Anda tidak dapat diverifikasi otomatis. Segera hubungi Call Center <strong class="text-[var(--ink)]">0823-7997-7693</strong> untuk konfirmasi ulang.</p>
+</div>
+</div>
+</div>
+<div class="info-card warning">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--gold)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+<i class="fa-solid fa-headset text-[var(--gold)]"></i>
+</div>
+<div>
+<div class="font-semibold text-sm mb-1">Konfirmasi via Call Center</div>
+<p class="text-xs text-[var(--muted)] leading-relaxed">Siapkan bukti transfer/screenshot pembayaran Anda, lalu hubungi <strong class="text-[var(--ink)]">0823-7997-7693</strong>. Tim kami akan membantu verifikasi manual pembayaran Anda. Layanan aktif pukul 08:00–21:00 WITA.</p>
+</div>
+</div>
+</div>
+<div class="info-card">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+<i class="fa-solid fa-box-open text-[var(--blue)]"></i>
+</div>
+<div>
+<div class="font-semibold text-sm mb-1">Pengambilan Race Pack</div>
+<p class="text-xs text-[var(--muted)] leading-relaxed">Race Pack (Jersey, Goodie Bag, Nomor Bib) diambil pada H-1 s/d H-3 hari event di lokasi yang akan diinformasikan melalui WhatsApp. Bawa KTP/asli identitas.</p>
+</div>
+</div>
+</div>
+<div class="info-card">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+<i class="fa-solid fa-clock text-[var(--blue)]"></i>
+</div>
+<div>
+<div class="font-semibold text-sm mb-1">Waktu Kedatangan</div>
+<p class="text-xs text-[var(--muted)] leading-relaxed">Peserta wajib hadir minimal 60 menit sebelum start. Gate dibuka pukul 05:00 WITA. Start 5K Fun Walk pukul 06:30 WITA.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="mt-10 pt-6 border-t border-[var(--line)] text-center">
+<div class="flex items-center justify-center gap-2 mb-3">
+<img alt="Logo" class="w-7 h-7 rounded-md object-cover" onerror="this.onerror=null;this.src='https://placehold.co/28/E4002B/FFFFFF?text=A'" src="logo.png"/>
+<span class="font-display text-sm tracking-wider">ALFAMIDI FAMILDAY FUNWALK 2026</span>
+</div>
+<p class="text-xs text-[var(--muted)] mb-2">Lapangan Vatulemo, Palu · 23 Agustus 2026</p>
+<div class="flex items-center justify-center gap-4 text-sm text-[var(--muted)]">
+<a href="#" class="hover:text-[var(--blue)] transition"><i class="fa-brands fa-instagram"></i></a>
+<a href="#" class="hover:text-[var(--blue)] transition"><i class="fa-brands fa-tiktok"></i></a>
+<span class="font-mono text-xs"><i class="fa-solid fa-phone text-xs mr-1"></i>0823-7997-7693</span>
+</div>
+<p class="text-[10px] text-[var(--muted)] mt-4">&copy; 2026 Alfamidi Familday Funwalk Palu. All rights reserved.</p>
+</footer>
+
+</main>
+
+<!-- TOAST -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[var(--ink)] text-white px-5 py-3 rounded-xl text-sm z-50 flex items-center gap-2 shadow-lg opacity-0 translate-y-4 transition-all duration-300 pointer-events-none no-print" id="toast">
+<i class="fa-solid fa-circle-info text-[var(--gold)]"></i>
+<span id="toastMsg">Pesan</span>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var LS_KEY = "alfamidi_reg"; 
+var data = null;
+
+try { data = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e) { data = null; }
+
+function populate() {
+  if (!data) {
+    document.getElementById("regIdDisplay").textContent = "DATA TIDAK DITEMUKAN";
+    document.getElementById("timestampDisplay").textContent = "-";
+    return;
+  }
+
+  document.getElementById("regIdDisplay").textContent = data.regId || "-";
+  document.getElementById("timestampDisplay").textContent = data.timestamp || "-";
+  document.getElementById("dNama").textContent = data.nama || "-";
+  document.getElementById("dKategori").textContent = data.kategori || "-";
+  document.getElementById("dJumlah").textContent = (data.jumlahTiket || "-") + " tiket";
+  document.getElementById("dJersey").textContent = data.ukuranJersey ? "Ukuran " + data.ukuranJersey : "-";
+  document.getElementById("dBib").textContent = data.namaBib || "-";
+  document.getElementById("dWA").textContent = data.wa || "-";
+  document.getElementById("dEmail").textContent = data.email || "-";
+  document.getElementById("dTotal").textContent = data.totalHarga || "-";
+
+  document.title = "Pending — " + (data.regId || "") + " — Alfamidi Familday Funwalk 2026";
+}
+
+populate();
+
+var shareBtn = document.getElementById("shareBtn");
+if (shareBtn) {
+  shareBtn.addEventListener("click", function() {
+    var text = "Pembelian tiket saya untuk Alfamidi Familday Funwalk 2026 Palu sedang dalam status PENDING.";
+    text += "\nKode QR pembayaran telah mencapai batas limit.";
+    text += "\nSaya perlu konfirmasi ulang pembayaran melalui Call Center: 0823-7997-7693";
+    if (data) {
+      text += "\nNo. Reg: " + data.regId;
+      text += "\nNama: " + data.nama;
+      text += "\nKategori: " + data.kategori + " (" + data.jumlahTiket + " tiket)";
+      text += "\nTotal: " + data.totalHarga;
+    }
+
+    if (navigator.share) {
+      navigator.share({ title: "Pending Tiket — Alfamidi Funwalk 2026", text: text }).catch(function(){});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() {
+        showToast("Info pembelian berhasil disalin ke clipboard!");
+      });
+    } else {
+      showToast("Browser tidak mendukung fitur berbagi");
+    }
+  });
+}
+
+var toastTimer = null;
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  var m = document.getElementById("toastMsg");
+  m.textContent = msg;
+  t.style.opacity = "1";
+  t.style.transform = "translateX(-50%) translateY(0)";
+  t.style.pointerEvents = "auto";
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() {
+    t.style.opacity = "0";
+    t.style.transform = "translateX(-50%) translateY(16px)";
+    t.style.pointerEvents = "none";
+  }, 3000);
+}
+
+})();
+</script>
+</body>
+</html>
