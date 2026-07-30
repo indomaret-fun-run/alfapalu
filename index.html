@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pembelian Tiket — Alfamidi Familday Funwalk 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Anton&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+:root {
+--blue: #E4002B; --blue-dark: #B30022; --blue-light: #FF4D6D; --blue-soft: #FFF0F3; /* Warna Merah Alfamidi */
+--cream: #FFF8F0; --ink: #1A1A1A; --muted: #6B6B73; --line: #E8E8EC; --bg: #FAFAFA;
+--emerald: #10B981; --gold: #F5A623; --red: #EF4444;
+}
+* { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; }
+.font-display { font-family: 'Anton', sans-serif; letter-spacing: 0.01em; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+#initialLoading {
+position: fixed; inset: 0; z-index: 9999;
+background: radial-gradient(circle at center, #B30022 0%, #3a0010 100%);
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#initialLoading.hide { opacity: 0; visibility: hidden; }
+#initialLoading::before {
+content: ''; position: absolute; inset: 0;
+background-image: linear-gradient(rgba(255, 77, 109, 0.1) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 77, 109, 0.1) 1px, transparent 1px);
+background-size: 40px 40px;
+-webkit-mask-image: radial-gradient(circle at center, black, transparent 70%);
+mask-image: radial-gradient(circle at center, black, transparent 70%);
+}
+.init-logo {
+width: 90px; height: 90px; border-radius: 18px; object-fit: cover;
+box-shadow: 0 0 40px rgba(255, 77, 109, 0.6);
+animation: heartbeat 1.5s ease-in-out infinite; z-index: 10;
+}
+@keyframes heartbeat {
+0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255,77,109,0.4); }
+50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(255,77,109,0.8); }
+}
+.init-track { width: 260px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 40px; z-index: 10; }
+.init-fill {
+height: 100%; width: 0%; background: linear-gradient(90deg, #FF4D6D, #FFFFFF); border-radius: 2px;
+box-shadow: 0 0 10px rgba(255,255,255,0.8);
+animation: loadProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes loadProgress { 0% { width: 0%; } 60% { width: 80%; } 100% { width: 100%; } }
+.init-text { color: white; font-family: 'Anton', sans-serif; letter-spacing: 0.15em; margin-top: 25px; font-size: 1.3rem; z-index: 10; }
+.init-subtext { color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 8px; font-family: 'JetBrains Mono', monospace; z-index: 10; }
+
+.hero-section { position: relative; background-color: #3a0010; overflow: hidden; }
+.hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.hero-section::before {
+content: ''; position: absolute; inset: 0; z-index: 1;
+background: linear-gradient(90deg, rgba(58, 0, 16, 0.92) 0%, rgba(58, 0, 16, 0.75) 50%, rgba(58, 0, 16, 0.5) 100%);
+}
+.dot-pattern { background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 20px 20px; }
+
+.online-tag {
+display: inline-flex; align-items: center; gap: 8px;
+padding: 6px 14px; border-radius: 999px;
+background: linear-gradient(90deg, rgba(245,166,35,0.25), rgba(16,185,129,0.25));
+border: 1px solid rgba(255,255,255,0.35);
+color: #FFFFFF; font-weight: 700; font-size: 11px; letter-spacing: 0.18em;
+margin-bottom: 12px; position: relative; overflow: hidden; backdrop-filter: blur(6px);
+}
+.online-tag::after {
+content: ''; position: absolute; top: 0; left: -100%;
+width: 60%; height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+animation: shineTag 2.8s ease-in-out infinite;
+}
+@keyframes shineTag { 0% { left: -100%; } 60%, 100% { left: 120%; } }
+.online-dot { width: 7px; height: 7px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981; animation: blink 1.4s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.ticket-alert {
+position: relative; overflow: hidden;
+background: linear-gradient(90deg, #B91C1C 0%, #DC2626 50%, #B91C1C 100%);
+background-size: 200% 100%;
+animation: alertSlide 3s ease-in-out infinite, alertBg 4s linear infinite;
+box-shadow: 0 8px 28px rgba(220, 38, 38, 0.45), inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+@keyframes alertSlide { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes alertBg { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.ticket-alert::before {
+content: ''; position: absolute; top: 0; left: -50%; width: 50%; height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+animation: shimmer 3.2s linear infinite;
+}
+@keyframes shimmer { 0% { left: -50%; } 100% { left: 150%; } }
+.alert-icon { animation: warnShake 1.2s ease-in-out infinite, warnPulse 1.2s ease-in-out infinite; display: inline-block; }
+@keyframes warnShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+@keyframes warnPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+.ticket-count {
+font-family: 'Anton', sans-serif; font-size: clamp(1.5rem, 4vw, 2.5rem);
+color: #FFD700; text-shadow: 0 0 18px rgba(255,215,0,0.85), 0 0 6px rgba(255,255,255,0.6);
+animation: countPop 1.6s ease-in-out infinite; display: inline-block;
+}
+@keyframes countPop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+.progress-bar-track { height: 8px; background: rgba(255,255,255,0.25); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
+.progress-bar-fill {
+height: 100%; width: 90%; 
+background: linear-gradient(90deg, #F5A623, #FFD700, #10B981);
+background-size: 200% 100%;
+animation: barFlow 2.5s linear infinite;
+border-radius: 999px; box-shadow: 0 0 12px rgba(255,215,0,0.6);
+}
+@keyframes barFlow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+.step-node { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: var(--muted); }
+.step-node.active { background: var(--blue); color: white; border-color: var(--blue); box-shadow: 0 4px 14px rgba(228,0,43,0.35); }
+.step-node.done { background: var(--emerald); color: white; border-color: var(--emerald); }
+.step-line-fill { transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.field { background: white; border: 1.5px solid var(--line); border-radius: 10px; transition: all 0.2s; font-size: 15px; width: 100%; }
+.field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(228,0,43,0.1); outline: none; }
+.field:read-only { background: #f8f8f8; color: var(--muted); cursor: not-allowed; }
+.field-label { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.field-label .req { color: var(--blue); }
+
+.qty-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: white; border: 1.5px solid var(--line); border-radius: 10px; cursor: pointer; transition: all 0.2s; font-size: 16px; font-weight: bold; color: var(--blue); }
+.qty-btn:hover:not(:disabled) { background: var(--blue-soft); border-color: var(--blue); }
+.qty-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.qty-input { width: 60px; height: 44px; text-align: center; font-weight: 800; font-size: 18px; border: 1.5px solid var(--line); border-radius: 10px; background: white; }
+
+.card { background: white; border-radius: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04); }
+.btn-primary { background: var(--blue); color: white; font-weight: 700; border-radius: 10px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(228,0,43,0.25); }
+.btn-primary:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(228,0,43,0.35); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-secondary { background: white; color: var(--ink); border: 1.5px solid var(--line); font-weight: 600; border-radius: 10px; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--ink); background: #F5F5F7; }
+
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.radio-card { border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; transition: all 0.2s; background: white; user-select: none; }
+.radio-card:hover { border-color: #C0C0C8; }
+.radio-card.selected { border-color: var(--blue); background: var(--blue-soft); box-shadow: 0 0 0 3px rgba(228,0,43,0.1); }
+
+.qr-frame { background: white; padding: 16px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: relative; }
+
+.check-circle { stroke-dasharray: 166; stroke-dashoffset: 166; animation: drawCircle 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.2s forwards; }
+.check-mark { stroke-dasharray: 48; stroke-dashoffset: 48; animation: drawCheck 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; }
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--ink); color: white; padding: 12px 20px; border-radius: 10px; font-size: 14px; z-index: 100; opacity: 0; transition: all 0.3s; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+.pulse-dot { animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
+
+.marquee-track { display: flex; gap: 3rem; animation: marquee 25s linear infinite; white-space: nowrap; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.float-1 { animation: float1 7s ease-in-out infinite; }
+.float-2 { animation: float1 9s ease-in-out infinite reverse; }
+@keyframes float1 { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-15px) rotate(3deg); } }
+
+.text-glow { text-shadow: 0 0 30px rgba(255,77,109,0.5); }
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.summary-row:last-child { border-bottom: none; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 60; display: none; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.show { display: flex; animation: fadeIn 0.2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.custom-checkbox { width: 22px; height: 22px; border: 2px solid var(--line); border-radius: 6px; cursor: pointer; appearance: none; -webkit-appearance: none; transition: all 0.2s; position: relative; flex-shrink: 0; background: white; }
+.custom-checkbox:checked { background: var(--blue); border-color: var(--blue); }
+.custom-checkbox:checked::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.custom-checkbox:hover { border-color: var(--blue); }
+
+#premiumLoading {
+position: fixed; inset: 0; z-index: 99999;
+background: radial-gradient(circle at 50% 50%, #5c0011 0%, #140005 70%, #000000 100%);
+display: none; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
+}
+#premiumLoading.show { display: flex; }
+
+.premium-bg-grid {
+position: absolute; inset: 0;
+background-image: linear-gradient(rgba(255, 77, 109, 0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 77, 109, 0.08) 1px, transparent 1px);
+background-size: 50px 50px;
+-webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 70%);
+mask-image: radial-gradient(circle at center, black 20%, transparent 70%);
+animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+
+.premium-glow {
+position: absolute; width: 600px; height: 600px; border-radius: 50%;
+background: radial-gradient(circle, rgba(228, 0, 43, 0.3) 0%, transparent 70%);
+filter: blur(60px); animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 0.8; } }
+
+.premium-scan-line {
+position: absolute; left: 0; right: 0; height: 3px;
+background: linear-gradient(90deg, transparent, #FF4D6D, transparent);
+box-shadow: 0 0 20px #FF4D6D, 0 0 40px rgba(255,77,109,0.5);
+animation: scanMove 4s ease-in-out infinite; z-index: 5;
+}
+@keyframes scanMove { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+.premium-particle {
+position: absolute; bottom: -10px; border-radius: 50%;
+background: rgba(255, 77, 109, 0.6); box-shadow: 0 0 8px rgba(255, 77, 109, 0.8);
+animation: particleFloat linear infinite; pointer-events: none;
+}
+@keyframes particleFloat {
+0% { transform: translateY(0) translateX(0); opacity: 0; }
+10% { opacity: 1; } 90% { opacity: 1; }
+100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+}
+
+.premium-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; max-width: 520px; width: 90%; padding: 2rem; }
+.premium-logo-wrap { position: relative; width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+.premium-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; z-index: 10; box-shadow: 0 0 30px rgba(255, 77, 109, 0.6); animation: heartbeat 1.5s ease-in-out infinite; }
+.premium-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid transparent; border-top-color: #FF4D6D; border-right-color: #FF4D6D; animation: spinRing 1.5s linear infinite; }
+.premium-ring2 { position: absolute; inset: 12px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: rgba(245, 166, 35, 0.7); border-left-color: rgba(245, 166, 35, 0.7); animation: spinRing 2s linear infinite reverse; }
+.premium-ring3 { position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(255, 77, 109, 0.2); animation: spinRing 3s linear infinite; }
+@keyframes spinRing { to { transform: rotate(360deg); } }
+
+.premium-title { font-family: 'Anton', sans-serif; color: white; font-size: 1.6rem; letter-spacing: 0.1em; text-align: center; margin-bottom: 10px; text-shadow: 0 0 30px rgba(255, 77, 109, 0.6); }
+.premium-subtitle { color: rgba(255, 255, 255, 0.6); font-size: 0.85rem; text-align: center; margin-bottom: 35px; font-family: 'JetBrains Mono', monospace; min-height: 1.2em; transition: opacity 0.4s; }
+.premium-progress-container { width: 100%; max-width: 420px; }
+.premium-progress-track { height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4); position: relative; }
+.premium-progress-fill {
+height: 100%; width: 0%; border-radius: 999px;
+background: linear-gradient(90deg, #E4002B, #FF4D6D, #F5A623, #10B981);
+background-size: 200% 100%; box-shadow: 0 0 15px rgba(255, 77, 109, 0.7);
+animation: barFlow 2.5s linear infinite; transition: width 0.1s linear; position: relative;
+}
+.premium-progress-fill::after { content: ''; position: absolute; right: 0; top: -3px; bottom: -3px; width: 14px; background: white; border-radius: 999px; box-shadow: 0 0 15px white, 0 0 25px rgba(255,77,109,0.8); }
+.premium-progress-info { display: flex; justify-content: space-between; margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+#premiumPercent { color: #FF4D6D; font-weight: 700; font-size: 1.1rem; }
+#premiumTimer { color: rgba(255, 255, 255, 0.5); font-size: 1.1rem; }
+
+.premium-spinner-row { display: flex; gap: 10px; margin-top: 35px; }
+.premium-dot { width: 10px; height: 10px; border-radius: 50%; background: #FF4D6D; box-shadow: 0 0 8px rgba(255,77,109,0.6); animation: dotBounce 1.4s ease-in-out infinite; }
+.premium-dot:nth-child(2) { animation-delay: 0.2s; background: #F5A623; box-shadow: 0 0 8px rgba(245,166,35,0.6); }
+.premium-dot:nth-child(3) { animation-delay: 0.4s; background: #10B981; box-shadow: 0 0 8px rgba(16,185,129,0.6); }
+.premium-dot:nth-child(4) { animation-delay: 0.6s; background: #FF4D6D; }
+@keyframes dotBounce { 0%, 80%, 100% { transform: scale(0.5); opacity: 0.3; } 40% { transform: scale(1.3); opacity: 1; } }
+
+.premium-warning {
+margin-top: 40px; display: flex; align-items: center; gap: 10px;
+color: rgba(245, 166, 35, 0.9); font-size: 0.78rem;
+padding: 12px 24px; border-radius: 999px;
+background: rgba(245, 166, 35, 0.08); border: 1px solid rgba(245, 166, 35, 0.2);
+animation: warningPulse 2s ease-in-out infinite; backdrop-filter: blur(6px);
+}
+@keyframes warningPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+.premium-steps { margin-top: 25px; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 380px; }
+.premium-step-item { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.3); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; transition: all 0.4s; }
+.premium-step-item.active { color: rgba(255, 77, 109, 1); }
+.premium-step-item.done { color: rgba(16, 185, 129, 0.8); }
+.premium-step-item .step-icon { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; }
+.premium-step-item.active .step-icon { animation: spinRing 1s linear infinite; }
+
+@media print {
+body * { visibility: hidden; }
+.step-panel[data-panel="4"], .step-panel[data-panel="4"] * { visibility: visible; }
+.step-panel[data-panel="4"] { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+.no-print { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="initialLoading">
+<img alt="Logo Alfamidi" class="init-logo" onerror="this.onerror=null; this.src='https://placehold.co/90x90/E4002B/FFFFFF?text=A';" src="logo.png"/>
+<div class="init-track"><div class="init-fill"></div></div>
+<div class="init-text">ALFAMIDI FAMILDAY FUNWALK 2026</div>
+<div class="init-subtext">MEMUAT FORMULIR PEMBELIAN TIKET...</div>
+</div>
+
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[var(--line)] no-print">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img alt="Logo" class="w-10 h-10 rounded-lg object-cover shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/40/E4002B/FFFFFF?text=A';" src="logo.png"/>
+<div>
+<div class="font-display text-base leading-none tracking-wider">ALFAMIDI</div>
+<div class="text-[10px] tracking-[0.25em] text-[var(--blue)] font-semibold mt-0.5">PEMBELIAN TIKET · PALU 2026</div>
+</div>
+</div>
+<div class="hidden sm:flex items-center gap-4 text-sm">
+<div class="flex items-center gap-2 text-[var(--muted)]"><i class="fa-solid fa-phone text-xs"></i><span class="font-mono">0812-6789-1011</span></div>
+<div class="w-px h-5 bg-[var(--line)]"></div>
+<a aria-label="Instagram" class="text-[var(--muted)] hover:text-[var(--blue)] transition" href="https://www.alfamidiku.com"><i class="fa-brands fa-instagram"></i></a>
+</div>
+</div>
+</header>
+
+<section class="hero-section no-print">
+<video autoplay muted loop playsinline class="hero-video" id="bannerVideo" poster="">
+<source src="banner.mp4" type="video/mp4"/>
+</video>
+<div class="absolute inset-0 dot-pattern opacity-30" style="z-index:1;"></div>
+<div class="absolute top-10 right-10 w-32 h-32 rounded-full bg-[var(--blue)] opacity-30 blur-3xl float-1" style="z-index:1;"></div>
+<div class="absolute bottom-10 left-20 w-40 h-40 rounded-full bg-[var(--gold)] opacity-10 blur-3xl float-2" style="z-index:1;"></div>
+<div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-14" style="z-index:10;">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="online-tag"><span class="online-dot"></span><i class="fa-solid fa-wifi"></i> PEMBELIAN TIKET VIA ONLINE</span>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--blue)]/20 border border-[var(--blue)]/30 mb-4 backdrop-blur-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--blue-light)] pulse-dot"></span>
+<span class="text-[11px] tracking-[0.2em] text-red-200 font-semibold">OPEN REGISTRATION PALU H-1 · TIKET TERBATAS</span>
+</div>
+<h1 class="font-display text-4xl md:text-6xl text-white leading-[0.9]">
+FAMILDAY<br/><span class="text-[var(--blue-light)] text-glow">FUN WALK 2026</span></h1>
+<p class="mt-3 text-white/80 text-sm md:text-base max-w-md font-medium">Lengkapi data Anda untuk membeli tiket Alfamidi Familday Funwalk Palu 2026 di Lapangan Vatulemo.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-center"><div class="font-display text-3xl text-white">23</div><div class="text-[10px] tracking-widest text-white/70">AGUSTUS 2026</div></div>
+<div class="w-px h-12 bg-white/30"></div>
+<div class="text-center"><div class="font-display text-3xl text-white">PALU</div><div class="text-[10px] tracking-widest text-white/70">VATULEMO</div></div>
+<div class="w-px h-12 bg-white/30"></div>
+<div class="text-center"><div class="font-display text-3xl text-[var(--gold)]">RP 75K</div><div class="text-[10px] tracking-widest text-white/70">JERSEY + GOODIE BAG</div></div>
+</div>
+</div>
+</div>
+<div class="relative border-t border-white/10 py-3 overflow-hidden bg-black/40" style="z-index:10;">
+<div class="marquee-track text-xs tracking-[0.2em] text-white/60 font-semibold">
+<span>● MINGGU, 23 AGUSTUS 2026</span><span>● HANYA RP 75.000</span><span>● TERMASUK JERSEY &amp; GOODIE BAG</span>
+<span>● LOKASI: LAPANGAN VATULEMO, PALU</span><span>● OPEN REGISTRATION PALU H-1</span><span>● TUTUP 31 JULI 2026 16:00 WITA</span>
+<span>● MINGGU, 23 AGUSTUS 2026</span><span>● HANYA RP 75.000</span><span>● TERMASUK JERSEY &amp; GOODIE BAG</span>
+<span>● LOKASI: LAPANGAN VATULEMO, PALU</span><span>● OPEN REGISTRATION PALU H-1</span><span>● TUTUP 31 JULI 2026 16:00 WITA</span>
+</div>
+</div>
+</section>
+
+<section aria-label="Peringatan Tiket" class="ticket-alert no-print">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 md:py-5 relative z-10">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+<div class="flex items-center gap-4 md:gap-5 text-white">
+<span class="alert-icon text-3xl md:text-4xl">⚠️</span>
+<div>
+<div class="text-[10px] md:text-xs font-bold tracking-[0.25em] text-white/80 mb-1">⚠️ PENUTUPAN BATCH H-1</div>
+<div class="flex items-baseline gap-2 flex-wrap">
+<span class="text-sm md:text-base font-semibold text-white/90">TIKET TERSISA</span>
+<span class="ticket-count" id="ticketCount">25</span>
+<span class="text-sm md:text-base font-semibold text-white/90">LAGI!</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-72">
+<div class="flex justify-between text-[10px] md:text-xs text-white/85 font-semibold mb-1.5">
+<span><i class="fa-solid fa-fire text-[#FFD700]"></i> 475 TERJUAL</span>
+<span>500 KUOTA TERSEDIA</span>
+</div>
+<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+<div class="text-[10px] text-white/70 mt-1.5 text-right font-mono">95% TERVERIFIKASI</div>
+</div>
+</div>
+</div>
+</section>
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative" id="formSection">
+<div class="mb-8 md:mb-12 no-print">
+<div class="flex items-center justify-between max-w-3xl mx-auto relative">
+<div class="absolute top-6 left-[12.5%] right-[12.5%] h-1 bg-[var(--line)] rounded-full -z-0">
+<div class="step-line-fill h-full bg-gradient-to-r from-[var(--blue)] to-[var(--emerald)] rounded-full" id="progressLine" style="width: 0%"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center flex-1">
+<div class="step-node active w-12 h-12 rounded-full bg-white border-2 border-[var(--line)] flex items-center justify-center font-display text-base" data-step="1">01</div>
+<div class="mt-2 text-[11px] md:text-xs font-semibold text-center step-label">Data Diri</div>
+</div>
+<div class="relative z-10 flex flex-col items-center flex-1">
+<div class="step-node w-12 h-12 rounded-full bg-white border-2 border-[var(--line)] flex items-center justify-center font-display text-base" data-step="2">02</div>
+<div class="mt-2 text-[11px] md:text-xs font-semibold text-center text-[var(--muted)] step-label">Alamat &amp; Kontak</div>
+</div>
+<div class="relative z-10 flex flex-col items-center flex-1">
+<div class="step-node w-12 h-12 rounded-full bg-white border-2 border-[var(--line)] flex items-center justify-center font-display text-base" data-step="3">03</div>
+<div class="mt-2 text-[11px] md:text-xs font-semibold text-center text-[var(--muted)] step-label">Pembayaran</div>
+</div>
+<div class="relative z-10 flex flex-col items-center flex-1">
+<div class="step-node w-12 h-12 rounded-full bg-white border-2 border-[var(--line)] flex items-center justify-center font-display text-base" data-step="4">04</div>
+<div class="mt-2 text-[11px] md:text-xs font-semibold text-center text-[var(--muted)] step-label">Selesai</div>
+</div>
+</div>
+</div>
+
+<div class="card p-6 md:p-10 relative z-10">
+<form id="regForm" action="https://formspree.io/f/mkodppbj" method="POST" enctype="multipart/form-data" autocomplete="on" novalidate>
+<input type="hidden" name="_subject" value="🎟️ Pembelian Tiket - Alfamidi Familday Funwalk 2026 Palu"/>
+<input type="hidden" name="_template" value="table"/>
+<input type="hidden" name="_captcha" value="false"/>
+
+
+<div class="step-panel active" data-panel="1">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-1 h-7 bg-[var(--blue)] rounded-full"></div>
+<h2 class="font-display text-2xl md:text-3xl">DATA DIRI PESERTA</h2>
+</div>
+<p class="text-sm text-[var(--muted)] mb-8 ml-4">Pastikan data sesuai dengan KTP/SIM/Kartu Pelajar yang masih berlaku.</p>
+<div class="grid md:grid-cols-2 gap-5">
+<div class="md:col-span-2">
+<label class="field-label">Nama Lengkap <span class="req">*</span></label>
+<input autocomplete="name" class="field px-4 py-3" name="nama" placeholder="Contoh: Budi Santoso" required type="text"/>
+</div>
+
+<div>
+<label class="field-label">NIK / No. KTP / Kartu Pelajar <span class="text-[var(--muted)] text-xs font-normal">(Opsional)</span></label>
+<input autocomplete="off" class="field px-4 py-3 font-mono" name="nik" placeholder="Isi jika tersedia (KTP/Kartu Pelajar)" type="text"/>
+<p class="text-xs text-[var(--muted)] mt-1.5">Bebas diisi atau dikosongkan. Bisa menggunakan NIK, No. KTP, atau No. Kartu Pelajar.</p>
+</div>
+<div>
+<label class="field-label">Tanggal Lahir <span class="req">*</span></label>
+<input autocomplete="bday" class="field px-4 py-3" name="tgl_lahir" required type="date"/>
+</div>
+<div>
+<label class="field-label">Jenis Kelamin <span class="req">*</span></label>
+<select class="field px-4 py-3" name="jenis_kelamin" required><option value="">Pilih...</option><option>Laki-laki</option><option>Perempuan</option></select>
+</div>
+<div>
+<label class="field-label">No. WhatsApp <span class="req">*</span></label>
+<div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] font-mono text-sm">+62</span><input autocomplete="tel" class="field pl-12 pr-4 py-3 font-mono" inputmode="numeric" name="wa" placeholder="812 3456 7890" required type="tel"/></div>
+</div>
+<div>
+<label class="field-label">Email Aktif <span class="req">*</span></label>
+<input autocomplete="email" class="field px-4 py-3" name="email" placeholder="email@contoh.com" required type="email"/>
+</div>
+<div>
+<label class="field-label">Kategori Tiket <span class="req">*</span></label>
+<select class="field px-4 py-3" id="categorySelect" name="kategori" required><option selected value="75000">Regular - Rp 75.000</option></select>
+</div>
+<div>
+<label class="field-label">Jumlah Tiket <span class="req">*</span></label>
+<div class="flex items-center gap-3"><button class="qty-btn" data-action="qty-decrease" type="button"><i class="fa-solid fa-minus"></i></button><input class="qty-input" id="ticketQty" max="10" min="1" readonly type="number" value="1"/><button class="qty-btn" data-action="qty-increase" type="button"><i class="fa-solid fa-plus"></i></button><span class="text-xs text-[var(--muted)] ml-2">Maks 10 tiket</span></div>
+</div>
+<div>
+<label class="field-label">Ukuran Jersey <span class="req">*</span><button class="ml-auto text-xs text-red-600 hover:text-red-800 font-medium flex items-center gap-1" data-action="open-modal" type="button"><i class="fa-solid fa-ruler"></i> Lihat Size Chart</button></label>
+<div class="grid grid-cols-5 gap-2" id="jerseySizes">
+<label class="radio-card text-center py-3 font-semibold text-sm"><input class="hidden" name="ukuran_jersey" required type="radio" value="S"/>S</label>
+<label class="radio-card text-center py-3 font-semibold text-sm selected"><input checked class="hidden" name="ukuran_jersey" type="radio" value="M"/>M</label>
+<label class="radio-card text-center py-3 font-semibold text-sm"><input class="hidden" name="ukuran_jersey" type="radio" value="L"/>L</label>
+<label class="radio-card text-center py-3 font-semibold text-sm"><input class="hidden" name="ukuran_jersey" type="radio" value="XL"/>XL</label>
+<label class="radio-card text-center py-3 font-semibold text-sm"><input class="hidden" name="ukuran_jersey" type="radio" value="XXL"/>XXL</label>
+</div>
+</div>
+<div class="md:col-span-2">
+<label class="field-label">Nama Bib (maks 12 karakter)</label>
+<input class="field px-4 py-3" maxlength="12" name="nama_bib" placeholder="Nama yang dicetak di nomor dada" type="text"/>
+<p class="text-xs text-[var(--muted)] mt-1.5">Kosongkan jika ingin menggunakan nama lengkap.</p>
+</div>
+</div>
+<div class="flex justify-end mt-8 pt-6 border-t border-[var(--line)]"><button class="btn-primary px-8 py-3.5 inline-flex items-center gap-2" data-action="next" data-from="1" type="button">LANJUT <i class="fa-solid fa-arrow-right"></i></button></div>
+</div>
+
+
+<div class="step-panel" data-panel="2">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-1 h-7 bg-[var(--blue)] rounded-full"></div>
+<h2 class="font-display text-2xl md:text-3xl">ALAMAT &amp; KONTAK DARURAT</h2>
+</div>
+<p class="text-sm text-[var(--muted)] mb-8 ml-4">Data alamat untuk pengiriman paket peserta dan kontak darurat saat event.</p>
+<div class="grid md:grid-cols-2 gap-5">
+<div class="md:col-span-2">
+<label class="field-label">Alamat Lengkap <span class="req">*</span></label>
+<textarea autocomplete="street-address" class="field px-4 py-3" name="alamat" placeholder="Jalan, nomor rumah, RT/RW, kelurahan" required rows="2"></textarea>
+</div>
+<div><label class="field-label">Kota / Kabupaten <span class="req">*</span></label><input class="field px-4 py-3" name="kota" readonly type="text" value="Palu"/></div>
+<div><label class="field-label">Provinsi <span class="req">*</span></label><input class="field px-4 py-3" name="provinsi" readonly type="text" value="Sulawesi Tengah"/></div>
+<div><label class="field-label">Kode Pos</label><input autocomplete="postal-code" class="field px-4 py-3 font-mono" inputmode="numeric" maxlength="5" name="kode_pos" placeholder="Contoh: 94111" type="text"/></div>
+<div><label class="field-label">Golongan Darah <span class="req">*</span></label><select class="field px-4 py-3" name="gol_darah" required><option value="">Pilih...</option><option>A</option><option>B</option><option>AB</option><option>O</option><option>Tidak Tahu</option></select></div>
+</div>
+<div class="mt-8 pt-6 border-t border-[var(--line)]">
+<div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-triangle-exclamation text-[var(--blue)]"></i><h3 class="font-semibold text-base">Kontak Darurat</h3></div>
+<p class="text-sm text-[var(--muted)] mb-6">Hubungi keluarga/kerabat jika terjadi keadaan darurat saat event berlangsung.</p>
+<div class="grid md:grid-cols-2 gap-5">
+<div><label class="field-label">Nama Kontak Darurat <span class="req">*</span></label><input autocomplete="off" class="field px-4 py-3" name="nama_darurat" placeholder="Contoh: Siti Aminah" required type="text"/></div>
+<div><label class="field-label">Hubungan <span class="req">*</span></label><select class="field px-4 py-3" name="hubungan_darurat" required><option value="">Pilih...</option><option>Orang Tua</option><option>Suami / Istri</option><option>Saudara</option><option>Anak</option><option>Kerabat Lainnya</option><option>Teman</option></select></div>
+<div class="md:col-span-2"><label class="field-label">No. HP Kontak Darurat <span class="req">*</span></label><div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] font-mono text-sm">+62</span><input autocomplete="tel" class="field pl-12 pr-4 py-3 font-mono" inputmode="numeric" name="hp_darurat" placeholder="812 3456 7890" required type="tel"/></div></div>
+<div class="md:col-span-2"><label class="field-label">Riwayat Penyakit / Alergi</label><textarea class="field px-4 py-3" name="riwayat_penyakit" placeholder="Contoh: Asma, alergi kacang, dll. Kosongkan jika tidak ada." rows="2"></textarea></div>
+</div>
+</div>
+<div class="flex justify-between mt-8 pt-6 border-t border-[var(--line)]"><button class="btn-secondary px-6 py-3.5 inline-flex items-center gap-2" data-action="prev" data-from="2" type="button"><i class="fa-solid fa-arrow-left"></i> KEMBALI</button><button class="btn-primary px-8 py-3.5 inline-flex items-center gap-2" data-action="next" data-from="2" type="button">LANJUT <i class="fa-solid fa-arrow-right"></i></button></div>
+</div>
+
+
+<div class="step-panel" data-panel="3">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-1 h-7 bg-[var(--blue)] rounded-full"></div>
+<h2 class="font-display text-2xl md:text-3xl">PEMBAYARAN TIKET</h2>
+</div>
+<p class="text-sm text-[var(--muted)] mb-8 ml-4">Scan QRIS di bawah ini dan unggah bukti pembayaran untuk konfirmasi pembelian tiket.</p>
+<div class="grid lg:grid-cols-5 gap-8">
+<div class="lg:col-span-3 space-y-6">
+<div class="bg-[var(--cream)] rounded-xl p-5 border border-[var(--line)]">
+<div class="text-xs font-bold tracking-widest text-[var(--muted)] mb-4">RINGKASAN PESANAN</div>
+<div class="summary-row">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center"><i class="fa-solid fa-ticket text-[var(--blue)]"></i></div><div><div class="font-semibold text-sm" id="summaryCategory">Regular</div><div class="text-xs text-[var(--muted)]">Tiket Alfamidi Familday Funwalk 2026 - Palu</div></div></div>
+<div class="font-semibold text-sm" id="summaryPrice">Rp 75.000</div>
+</div>
+<div class="summary-row">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center"><i class="fa-solid fa-shirt text-[var(--blue)]"></i></div><div><div class="font-semibold text-sm">Jersey Eksklusif</div><div class="text-xs text-[var(--muted)]" id="summaryJersey">Ukuran M</div></div></div>
+<div class="font-semibold text-sm">Termasuk</div>
+</div>
+<div class="summary-row">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center"><i class="fa-solid fa-bag-shopping text-[var(--blue)]"></i></div><div><div class="font-semibold text-sm">Goodie Bag</div><div class="text-xs text-[var(--muted)]">Eksklusif 2026</div></div></div>
+<div class="font-semibold text-sm">Termasuk</div>
+</div>
+<div class="summary-row">
+<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-[var(--blue)]/10 flex items-center justify-center"><i class="fa-solid fa-medal text-[var(--blue)]"></i></div><div><div class="font-semibold text-sm">Medali Finisher</div><div class="text-xs text-[var(--muted)]">Eksklusif 2026</div></div></div>
+<div class="font-semibold text-sm">Termasuk</div>
+</div>
+</div>
+<div>
+<div class="text-xs font-bold tracking-widest text-[var(--muted)] mb-4">SCAN QRIS UNTUK PEMBAYARAN</div>
+<div class="flex flex-col items-center gap-4 p-6 bg-[var(--cream)] rounded-xl border border-[var(--line)]">
+<img alt="QRIS Pembayaran" class="w-48 h-48 object-contain" onerror="this.onerror=null; this.src='https://placehold.co/200x200/FFFFFF/000000?text=QRIS+Image';" src="qris.png"/>
+<div class="text-center"><p class="text-sm font-semibold">Scan via QRIS (Semua E-Wallet/Bank)</p><p class="text-xs text-[var(--muted)] mt-1">Transfer sesuai nominal: <span class="font-bold text-[var(--blue)]" id="totalPriceInline">Rp 75.000</span></p></div>
+</div>
+</div>
+<div class="mt-6">
+<label class="field-label">Upload Bukti Pembayaran <span class="req">*</span></label>
+<input accept="image/*,application/pdf" class="field px-4 py-2.5 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[var(--blue-soft)] file:text-[var(--blue)] hover:file:bg-red-100" id="buktiBayarInput" name="bukti_bayar" required type="file"/>
+<p class="text-xs text-[var(--muted)] mt-1.5">Format: JPG, PNG, atau PDF (Maks 2MB)</p>
+</div>
+</div>
+
+<div class="lg:col-span-2">
+<div class="sticky top-24 bg-white border border-[var(--line)] rounded-xl p-6 shadow-sm">
+<div class="text-xs font-bold tracking-widest text-[var(--muted)] mb-4">TOTAL PEMBAYARAN</div>
+<div class="flex items-end justify-between mb-6">
+<div class="text-sm text-[var(--muted)]">Total Bayar (<span id="totalQtyText">1</span> Tiket)</div>
+<div class="font-display text-3xl text-[var(--blue)]" id="totalPrice">Rp 75.000</div>
+</div>
+<ul class="space-y-3 text-sm text-[var(--ink)] mb-6">
+<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--emerald)] mt-1"></i> Akses start Fun Walk</li>
+<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--emerald)] mt-1"></i> Race Pack (Jersey & Goodie Bag)</li>
+<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--emerald)] mt-1"></i> Medali finisher</li>
+<li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-[var(--emerald)] mt-1"></i> Doorprize menarik</li>
+</ul>
+
+<div class="flex items-start gap-3 mb-4 p-3 rounded-lg bg-[var(--blue-soft)] border border-[var(--blue)]/15">
+<input type="checkbox" id="agreeCheckbox" class="custom-checkbox mt-0.5"/>
+<label for="agreeCheckbox" class="text-xs text-[var(--ink)] cursor-pointer leading-relaxed font-medium">
+Saya menyatakan bahwa data yang saya isi adalah benar dan saya telah melakukan pembayaran sesuai nominal yang tertera. Saya menyetujui Syarat &amp; Ketentuan yang berlaku.
+</label>
+</div>
+
+<button class="btn-primary w-full py-4 inline-flex items-center justify-center gap-2" data-action="submit" id="submitBtn" type="button" disabled>
+<i class="fa-solid fa-cloud-arrow-up"></i> KONFIRMASI PENDAFTARAN
+</button>
+<p class="text-xs text-center text-[var(--muted)] mt-3" id="btnHint">
+<i class="fa-solid fa-lock"></i> Unggah bukti pembayaran &amp; centang persetujuan untuk mengaktifkan tombol
+</p>
+</div>
+</div>
+</div>
+<div class="flex justify-start mt-8 pt-6 border-t border-[var(--line)]"><button class="btn-secondary px-6 py-3.5 inline-flex items-center gap-2" data-action="prev" data-from="3" type="button"><i class="fa-solid fa-arrow-left"></i> KEMBALI</button></div>
+</div>
+
+
+<div class="step-panel" data-panel="4">
+<div class="text-center max-w-2xl mx-auto py-8">
+<div class="flex justify-center mb-6 no-print">
+<svg height="80" viewBox="0 0 52 52" width="80"><circle class="check-circle" cx="26" cy="26" fill="none" r="25" stroke="#10B981" stroke-width="3"></circle><path class="check-mark" d="M14 27 l8 8 l16 -16" fill="none" stroke="#10B981" stroke-width="4"></path></svg>
+</div>
+<h2 class="font-display text-3xl md:text-4xl mb-3">PENDAFTARAN BERHASIL!</h2>
+<p class="text-[var(--muted)] mb-8">Selamat! Pembayaran Anda sedang diverifikasi.</p>
+</div>
+</div>
+
+</form>
+</div>
+</main>
+
+
+<div class="modal-overlay" data-action="close-modal-bg" id="sizeChartModal">
+<div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
+<button aria-label="Tutup" class="absolute top-4 right-4 text-[var(--muted)] hover:text-[var(--ink)]" data-action="close-modal"><i class="fa-solid fa-xmark text-xl"></i></button>
+<h3 class="font-display text-2xl mb-4">SIZE CHART JERSEY</h3>
+<table class="w-full text-sm border-collapse">
+<thead><tr class="border-b border-[var(--line)]"><th class="text-left py-2 font-semibold">Ukuran</th><th class="text-left py-2 font-semibold">Lebar Dada (cm)</th><th class="text-left py-2 font-semibold">Panjang (cm)</th></tr></thead>
+<tbody>
+<tr class="border-b border-[var(--line)]"><td class="py-2 font-mono">S</td><td>48</td><td>68</td></tr>
+<tr class="border-b border-[var(--line)]"><td class="py-2 font-mono">M</td><td>50</td><td>70</td></tr>
+<tr class="border-b border-[var(--line)]"><td class="py-2 font-mono">L</td><td>52</td><td>72</td></tr>
+<tr class="border-b border-[var(--line)]"><td class="py-2 font-mono">XL</td><td>54</td><td>74</td></tr>
+<tr><td class="py-2 font-mono">XXL</td><td>56</td><td>76</td></tr>
+</tbody>
+</table>
+<p class="text-xs text-[var(--muted)] mt-4">*Ukuran jersey bersifat unisex. Pastikan mengukur dengan tepat sebelum memilih.</p>
+</div>
+</div>
+
+<div class="toast no-print" id="toast"><i class="fa-solid fa-circle-info"></i><span id="toastMsg">Pesan</span></div>
+
+
+<div id="premiumLoading">
+<div class="premium-bg-grid"></div>
+<div class="premium-glow"></div>
+<div class="premium-scan-line"></div>
+<div class="premium-content">
+<div class="premium-logo-wrap">
+<div class="premium-ring3"></div>
+<div class="premium-ring"></div>
+<div class="premium-ring2"></div>
+<img alt="Logo" class="premium-logo" onerror="this.onerror=null; this.src='https://placehold.co/72x72/E4002B/FFFFFF?text=A';" src="logo.png"/>
+</div>
+<div class="premium-title">PEMROSESAN PEMBELIAN TIKET</div>
+<div class="premium-subtitle" id="premiumStatus">Memverifikasi pembayaran Anda...</div>
+<div class="premium-progress-container">
+<div class="premium-progress-track">
+<div class="premium-progress-fill" id="premiumProgressFill"></div>
+</div>
+<div class="premium-progress-info">
+<span id="premiumPercent">0%</span>
+<span id="premiumTimer">3:00</span>
+</div>
+</div>
+<div class="premium-spinner-row">
+<div class="premium-dot"></div>
+<div class="premium-dot"></div>
+<div class="premium-dot"></div>
+<div class="premium-dot"></div>
+</div>
+<div class="premium-steps" id="premiumSteps">
+<div class="premium-step-item" data-step="0"><span class="step-icon"><i class="fa-solid fa-check" style="font-size:7px;"></i></span> Verifikasi bukti pembayaran</div>
+<div class="premium-step-item" data-step="1"><span class="step-icon"><i class="fa-solid fa-check" style="font-size:7px;"></i></span> Validasi data pendaftaran</div>
+<div class="premium-step-item" data-step="2"><span class="step-icon"><i class="fa-solid fa-check" style="font-size:7px;"></i></span> Alokasi slot tiket</div>
+<div class="premium-step-item" data-step="3"><span class="step-icon"><i class="fa-solid fa-check" style="font-size:7px;"></i></span> Generate tiket digital</div>
+<div class="premium-step-item" data-step="4"><span class="step-icon"><i class="fa-solid fa-check" style="font-size:7px;"></i></span> Mengirim konfirmasi email</div>
+</div>
+<div class="premium-warning">
+<i class="fa-solid fa-lock"></i> Jangan tutup atau refresh halaman ini
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+"use strict";
+
+var FORMSPREE_ENDPOINT = "https://formspree.io/f/mkodppbj"; /* Ganti dengan endpoint Formspree Anda */
+var CITY = "PALU";
+var TOTAL_STEPS = 4;
+var MAX_QTY = 10;
+var MIN_QTY = 1;
+var ticketQty = 1;
+var PREMIUM_DURATION = 180000; /* 3 MENIT = 180.000 ms */
+
+/* ===== HELPER FUNCTIONS ===== */
+function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+
+/* ===== TICKET COUNT ANIMATION ===== */
+function animateTicketCount() {
+var el = $("#ticketCount");
+if (!el) return;
+var target = 25, duration = 1500, startTime = performance.now();
+function step(now) {
+var progress = Math.min((now - startTime) / duration, 1);
+var eased = 1 - Math.pow(1 - progress, 3);
+el.textContent = Math.floor(eased * target);
+if (progress < 1) requestAnimationFrame(step);
+else el.textContent = target;
+}
+requestAnimationFrame(step);
+}
+
+/* ===== STEP NAVIGATION ===== */
+function goToStep(step) {
+ $$(".step-panel").forEach(function(p) { p.classList.remove("active"); });
+var panel = $('.step-panel[data-panel="' + step + '"]');
+if (panel) panel.classList.add("active");
+
+ $$(".step-node").forEach(function(node) {
+var nodeStep = parseInt(node.dataset.step, 10);
+node.classList.remove("active", "done");
+if (nodeStep < step) {
+node.classList.add("done");
+node.innerHTML = '<i class="fa-solid fa-check"></i>';
+} else {
+node.textContent = String(nodeStep).padStart(2, "0");
+if (nodeStep === step) node.classList.add("active");
+}
+});
+
+var line = $("#progressLine");
+if (line) line.style.width = ((step - 1) / (TOTAL_STEPS - 1)) * 100 + "%";
+
+ $$(".step-label").forEach(function(label, idx) {
+label.classList.toggle("text-[var(--muted)]", (idx + 1) !== step);
+});
+
+var main = $("#formSection");
+if (main) {
+var top = main.getBoundingClientRect().top + window.scrollY - 80;
+window.scrollTo({ top: top, behavior: "smooth" });
+}
+}
+
+/* ===== VALIDATION ===== */
+function validateStep(step) {
+var panel = $('.step-panel[data-panel="' + step + '"]');
+if (!panel) return true;
+var requiredFields = panel.querySelectorAll("[required]");
+var valid = true, firstInvalid = null;
+
+requiredFields.forEach(function(field) {
+var value = (field.value || "").trim();
+var isInvalid = !value;
+
+/* Email validation */
+if (field.type === "email" && value) {
+var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(value)) isInvalid = true;
+}
+
+if (field.type === "file") return;
+
+if (isInvalid) {
+valid = false;
+field.style.borderColor = "#EF4444";
+if (!firstInvalid) firstInvalid = field;
+} else {
+field.style.borderColor = "";
+}
+});
+
+/* File size validation for step 3 */
+if (step === 3) {
+var fileInput = $("#buktiBayarInput");
+if (fileInput && fileInput.files.length > 0) {
+var fileSizeMB = fileInput.files[0].size / 1024 / 1024;
+if (fileSizeMB > 2) {
+showToast("Ukuran file melebihi 2MB!", "error");
+valid = false;
+}
+}
+}
+
+if (!valid && firstInvalid) {
+firstInvalid.focus();
+if (!$(".toast").classList.contains("show")) {
+showToast("Mohon lengkapi data wajib (*)", "error");
+}
+}
+return valid;
+}
+
+function nextStep(from) {
+if (!validateStep(from)) return;
+if (from < TOTAL_STEPS) {
+goToStep(from + 1);
+if (from + 1 === 3) updateSummary();
+}
+}
+function prevStep(from) { if (from > 1) goToStep(from - 1); }
+
+/* ===== PRICE CALCULATION ===== */
+function updatePrice() {
+var select = $("#categorySelect");
+if (!select) return;
+var basePrice = parseInt(select.value, 10) || 0;
+var label = select.options[select.selectedIndex].text.split(" - ")[0];
+var totalPrice = basePrice * ticketQty;
+var formattedPrice = "Rp " + totalPrice.toLocaleString("id-ID");
+
+ $("#summaryCategory").textContent = label + " (x" + ticketQty + ")";
+ $("#summaryPrice").textContent = "Rp " + totalPrice.toLocaleString("id-ID");
+ $("#totalPrice").textContent = formattedPrice;
+ $("#totalQtyText").textContent = ticketQty;
+
+var inlinePrice = $("#totalPriceInline");
+if (inlinePrice) inlinePrice.textContent = formattedPrice;
+
+var incBtn = $('.qty-btn[data-action="qty-increase"]');
+var decBtn = $('.qty-btn[data-action="qty-decrease"]');
+if (incBtn) incBtn.disabled = (ticketQty >= MAX_QTY);
+if (decBtn) decBtn.disabled = (ticketQty <= MIN_QTY);
+}
+
+function updateSummary() {
+updatePrice();
+var jersey = $('input[name="ukuran_jersey"]:checked');
+if (jersey) $("#summaryJersey").textContent = "Ukuran " + jersey.value;
+}
+
+function changeQty(action) {
+if (action === "increase" && ticketQty < MAX_QTY) ticketQty++;
+else if (action === "decrease" && ticketQty > MIN_QTY) ticketQty--;
+ $("#ticketQty").value = ticketQty;
+updatePrice();
+}
+
+/* ===== MODAL ===== */
+function openModal() { $("#sizeChartModal").classList.add("show"); }
+function closeModal() { $("#sizeChartModal").classList.remove("show"); }
+
+/* ===== TOAST ===== */
+var toastTimer = null;
+function showToast(message, type) {
+type = type || "info";
+var toast = $("#toast"), msgEl = $("#toastMsg"), iconEl = toast.querySelector("i");
+msgEl.textContent = message;
+var colors = { error: "#EF4444", success: "#10B981", info: "#1A1A1A" };
+var icons = { error: "fa-circle-exclamation", success: "fa-circle-check", info: "fa-circle-info" };
+toast.style.background = colors[type] || colors.info;
+iconEl.className = "fa-solid " + (icons[type] || icons.info);
+toast.classList.add("show");
+if (toastTimer) clearTimeout(toastTimer);
+toastTimer = setTimeout(function() { toast.classList.remove("show"); }, 3500);
+}
+
+/* ===== SUBMIT BUTTON STATE ===== */
+function updateSubmitButton() {
+var fileInput = $("#buktiBayarInput");
+var checkbox = $("#agreeCheckbox");
+var btn = $("#submitBtn");
+var hint = $("#btnHint");
+if (!fileInput || !checkbox || !btn) return;
+
+var fileFilled = fileInput.files && fileInput.files.length > 0;
+var checkboxChecked = checkbox.checked;
+
+if (fileFilled && checkboxChecked) {
+btn.disabled = false;
+if (hint) hint.style.display = "none";
+} else {
+btn.disabled = true;
+if (hint) hint.style.display = "block";
+}
+}
+
+/* ===== PREMIUM LOADING PARTICLES ===== */
+function createPremiumParticles() {
+var container = $("#premiumLoading");
+if (!container) return;
+container.querySelectorAll(".premium-particle").forEach(function(e) { e.remove(); });
+
+var colors = ["rgba(255,77,109,0.6)", "rgba(245,166,35,0.5)", "rgba(16,185,129,0.5)", "rgba(255,255,255,0.4)"];
+for (var i = 0; i < 35; i++) {
+var particle = document.createElement("div");
+particle.className = "premium-particle";
+particle.style.left = Math.random() * 100 + "%";
+particle.style.animationDuration = (4 + Math.random() * 5) + "s";
+particle.style.animationDelay = Math.random() * 6 + "s";
+var size = 2 + Math.random() * 5;
+particle.style.width = size + "px";
+particle.style.height = size + "px";
+particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+container.appendChild(particle);
+}
+}
+
+/* ===== PREMIUM LOADING SHOW (3 MENIT) ===== */
+function showPremiumLoading() {
+var overlay = $("#premiumLoading");
+overlay.classList.add("show");
+createPremiumParticles();
+
+var startTime = performance.now();
+var progressFill = $("#premiumProgressFill");
+var percentEl = $("#premiumPercent");
+var timerEl = $("#premiumTimer");
+var statusEl = $("#premiumStatus");
+var stepItems = $$("#premiumSteps .premium-step-item");
+
+var messages = [
+"Memverifikasi pembayaran Anda...",
+"Memvalidasi data pendaftaran...",
+"Mengamankan slot tiket Anda...",
+"Memproses pembayaran via QRIS...",
+"Mengirim konfirmasi ke email Anda...",
+"Menyiapkan tiket digital...",
+"Hampir selesai, mohon tunggu..."
+];
+
+var totalSteps = stepItems.length;
+
+var msgInterval = setInterval(function() {
+var elapsed = performance.now() - startTime;
+var msgIdx = Math.floor(elapsed / (PREMIUM_DURATION / messages.length));
+if (msgIdx < messages.length) {
+statusEl.style.opacity = "0";
+setTimeout(function() {
+statusEl.textContent = messages[msgIdx];
+statusEl.style.opacity = "1";
+}, 300);
+}
+var stepIdx = Math.floor(elapsed / (PREMIUM_DURATION / totalSteps));
+stepItems.forEach(function(item, idx) {
+item.classList.remove("active", "done");
+if (idx < stepIdx) {
+item.classList.add("done");
+item.querySelector(".step-icon").innerHTML = '<i class="fa-solid fa-check" style="font-size:7px;"></i>';
+} else if (idx === stepIdx) {
+item.classList.add("active");
+item.querySelector(".step-icon").innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="font-size:7px;"></i>';
+} else {
+item.querySelector(".step-icon").innerHTML = '<i class="fa-solid fa-clock" style="font-size:6px;"></i>';
+}
+});
+}, 1000);
+
+function update(now) {
+var elapsed = now - startTime;
+var progress = Math.min(elapsed / PREMIUM_DURATION, 1);
+var percent = Math.floor(progress * 100);
+progressFill.style.width = percent + "%";
+percentEl.textContent = percent + "%";
+
+var remaining = Math.max(0, PREMIUM_DURATION - elapsed);
+var mins = Math.floor(remaining / 60000);
+var secs = Math.floor((remaining % 60000) / 1000);
+timerEl.textContent = mins + ":" + String(secs).padStart(2, "0");
+
+if (progress < 1) {
+requestAnimationFrame(update);
+} else {
+clearInterval(msgInterval);
+/* Tandai semua step selesai */
+stepItems.forEach(function(item) {
+item.classList.remove("active");
+item.classList.add("done");
+item.querySelector(".step-icon").innerHTML = '<i class="fa-solid fa-check" style="font-size:7px;"></i>';
+});
+statusEl.style.opacity = "0";
+setTimeout(function() {
+statusEl.textContent = "Pembelian tiket berhasil! Mengalihkan...";
+statusEl.style.opacity = "1";
+}, 300);
+/* Redirect ke success.html setelah 1.5 detik */
+setTimeout(function() {
+window.location.href = "success.html";
+}, 1500);
+}
+}
+requestAnimationFrame(update);
+}
+
+/* ===== FORM SUBMIT ===== */
+async function submitForm() {
+if (!validateStep(3)) return;
+
+var fileInput = $("#buktiBayarInput");
+var checkbox = $("#agreeCheckbox");
+
+if (!fileInput.files || fileInput.files.length === 0) {
+showToast("Silakan unggah bukti pembayaran terlebih dahulu", "error");
+return;
+}
+if (!checkbox.checked) {
+showToast("Silakan centang kotak persetujuan", "error");
+return;
+}
+
+var btn = $("#submitBtn");
+btn.disabled = true;
+btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MEMPROSES...';
+
+/* Submit form data ke Formspree di background */
+try {
+var form = $("#regForm");
+var formData = new FormData(form);
+var basePrice = parseInt(form.kategori.value, 10) || 0;
+var categoryLabel = form.kategori.options[form.kategori.selectedIndex].text.split(" - ")[0];
+var jerseySelected = $('input[name="ukuran_jersey"]:checked');
+var jerseyVal = jerseySelected ? jerseySelected.value : "-";
+var random = Math.floor(1000 + Math.random() * 9000);
+var regId = "AFFW-2026-" + CITY + "-" + random;
+var fileName = fileInput.files[0].name;
+
+formData.set("reg_id", regId);
+formData.set("jumlah_tiket", ticketQty);
+formData.set("total_harga", "Rp " + (basePrice * ticketQty).toLocaleString("id-ID"));
+formData.set("ukuran_jersey", jerseyVal);
+formData.set("nama_bib", (form.nama_bib.value || form.nama.value));
+formData.set("wa", "+62 " + form.wa.value);
+formData.set("hp_darurat", "+62 " + form.hp_darurat.value);
+formData.set("kode_pos", form.kode_pos.value || "-");
+formData.set("riwayat_penyakit", form.riwayat_penyakit.value || "Tidak ada");
+formData.set("kategori_label", categoryLabel);
+formData.set("nik_keterangan", form.nik.value || "Tidak diisi / menggunakan kartu pelajar");
+formData.set("event_lokasi", "Lapangan Vatulemo, Palu");
+formData.set("event_tanggal", "Minggu, 23 Agustus 2026");
+formData.set("nama_file_bukti", fileName);
+formData.set("tipe_pendaftaran", "Pembelian Tiket");
+
+await fetch(FORMSPREE_ENDPOINT, {
+method: "POST",
+body: formData,
+headers: { "Accept": "application/json" }
+});
+} catch (error) {
+console.error("Submit error:", error);
+}
+
+/* Tampilkan premium loading 3 menit lalu redirect ke success.html */
+showPremiumLoading();
+}
+
+/* ===== EVENT DELEGATION (OPTIMIZED) ===== */
+document.body.addEventListener("click", function(e) {
+var target = e.target.closest("[data-action]");
+if (!target) return;
+var action = target.dataset.action;
+switch (action) {
+case "next": nextStep(parseInt(target.dataset.from, 10)); break;
+case "prev": prevStep(parseInt(target.dataset.from, 10)); break;
+case "submit": submitForm(); break;
+case "open-modal": openModal(); break;
+case "close-modal": closeModal(); break;
+case "close-modal-bg": if (e.target === target) closeModal(); break;
+case "qty-increase": changeQty("increase"); break;
+case "qty-decrease": changeQty("decrease"); break;
+}
+});
+
+document.body.addEventListener("change", function(e) {
+if (e.target.matches('input[name="ukuran_jersey"]')) {
+ $$('input[name="ukuran_jersey"]').forEach(function(i) {
+i.closest("label.radio-card").classList.remove("selected");
+});
+e.target.closest("label.radio-card").classList.add("selected");
+}
+if (e.target.matches("#categorySelect")) updatePrice();
+if (e.target.matches("#buktiBayarInput") || e.target.matches("#agreeCheckbox")) {
+updateSubmitButton();
+}
+});
+
+ $("#regForm").addEventListener("keydown", function(e) {
+if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+e.preventDefault();
+var activeNext = $('.step-panel.active [data-action="next"]');
+if (activeNext) activeNext.click();
+}
+});
+
+/* ===== INIT ===== */
+setTimeout(function() {
+var loadingEl = document.getElementById("initialLoading");
+if (loadingEl) loadingEl.classList.add("hide");
+}, 1500);
+
+animateTicketCount();
+updatePrice();
+updateSubmitButton();
+})();
+</script>
+</body>
+</html>
